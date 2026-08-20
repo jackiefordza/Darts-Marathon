@@ -96,7 +96,7 @@
         <button class="undo-btn undo-top" id="undo-visit" ${t.history.length===0?"disabled":""}>↩ Undo last entry</button>
 
         <div class="quickpicks">
-          ${[180,140,100,81,60,45,26].map(v=>`<button class="qp" data-score="${v}">${v}</button>`).join("")}
+          ${[180,140,100,85,81,60,45,41,26].map(v=>`<button class="qp" data-score="${v}">${v}</button>`).join("")}
           <button class="qp bust-btn" data-score="0">0 / miss</button>
         </div>
 
