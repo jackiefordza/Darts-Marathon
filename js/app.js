@@ -58,7 +58,7 @@
   function renderLanding(){
     return `
       <div class="landing">
-        <div class="board-ring"></div>
+        <img src="assets/burnaby-logo.png" alt="Burnaby Arms crest" class="crest" />
         <div class="eyebrow">Live · 100,001 → 0</div>
         <h1>${state.eventName}</h1>
         <div class="sub">Two boards, two teams, one countdown. Pick your role below.</div>
@@ -132,6 +132,7 @@
       </div>
       <div class="display-wrap">
         <div class="display-head">
+          <img src="assets/burnaby-logo.png" alt="Burnaby Arms crest" class="crest-small" />
           <h1>${state.eventName}</h1>
           <div class="sub">Live countdown · 100,001 to zero, doubles out</div>
           <div class="timer-badge" id="event-timer"><span class="tl">Time elapsed</span>${formatElapsed(state.startedAt)}</div>
