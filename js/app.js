@@ -1,6 +1,8 @@
 (function(){
   "use strict";
 
+  const RESET_PASSWORD = "JakeFordham";
+
   const DEFAULT_STATE = () => ({
     eventName: "Burnaby Arms Darts Marathon",
     teams: {
@@ -218,7 +220,7 @@
           <button class="btn-primary" id="save-setup">Save names</button>
           <button class="btn-danger" id="reset-event">Reset countdown to 100,001 for both teams</button>
         </div>
-        <div class="setup-note">Resetting clears both teams' remaining score and visit history back to 100,001, and clears the timer — use this once, right before the marathon starts. Changes sync to everyone's screen instantly.</div>
+        <div class="setup-note">Resetting clears both teams' remaining score and visit history back to 100,001, and clears the timer — use this once, right before the marathon starts. Changes sync to everyone's screen instantly. Reset is password-protected so it can't be triggered by accident.</div>
       </div>`;
   }
 
@@ -290,6 +292,9 @@
         view = "landing"; render();
       });
       document.getElementById("reset-event").addEventListener("click", async ()=>{
+        const pw = prompt("Enter the reset password:");
+        if(pw === null) return; // cancelled
+        if(pw !== RESET_PASSWORD){ alert("Incorrect password — reset cancelled."); return; }
         if(!confirm("Reset both teams to 100,001, clear all history, and reset the timer?")) return;
         state.teams.green.remaining = 100001; state.teams.green.history = []; state.teams.green.totalVisits = 0; state.teams.green.totalPoints = 0;
         state.teams.red.remaining = 100001; state.teams.red.history = []; state.teams.red.totalVisits = 0; state.teams.red.totalPoints = 0;
