@@ -49,7 +49,8 @@
     else if(view === "display") root.innerHTML = renderDisplay();
     else if(view === "setup") root.innerHTML = renderSetup();
     attachHandlers();
-    if(view === "display") setTimeout(initQr, 30);
+    if(view === "display") setTimeout(()=>initQr("qrcode"), 30);
+    if(view === "landing") setTimeout(()=>initQr("qrcode-landing"), 30);
   }
 
   function renderLanding(){
@@ -64,6 +65,10 @@
           <button class="menu-btn red" data-nav="entry-red"><span>${state.teams.red.name} — Enter Scores</span><span class="arrow">›</span></button>
           <button class="menu-btn display" data-nav="display"><span>Viewing Screen</span><span class="arrow">›</span></button>
           <button class="menu-btn setup" data-nav="setup">Event setup / reset</button>
+        </div>
+        <div class="qr-box landing-qr">
+          <div id="qrcode-landing"></div>
+          <div class="txt">Scan this to open the scorer on your phone</div>
         </div>
       </div>`;
   }
@@ -86,6 +91,8 @@
           <div class="finished-flag ${t.remaining===0?'show':''}">🏆 Finished!</div>
         </div>
 
+        <button class="undo-btn undo-top" id="undo-visit" ${t.history.length===0?"disabled":""}>↩ Undo last entry</button>
+
         <div class="quickpicks">
           ${[180,140,100,81,60,45,26].map(v=>`<button class="qp" data-score="${v}">${v}</button>`).join("")}
           <button class="qp bust-btn" data-score="0">0 / miss</button>
@@ -98,7 +105,6 @@
           <input type="text" id="thrower-name" placeholder="Thrower's name (optional)" />
         </div>
         <button class="submit-btn" id="submit-visit">Log this visit</button>
-        <button class="undo-btn" id="undo-visit" ${t.history.length===0?"disabled":""}>Undo last entry</button>
 
         <div class="visit-log">
           <h3>Recent visits</h3>
@@ -216,8 +222,8 @@
     if(entryT) entryT.textContent = formatElapsed(state.startedAt);
   }
 
-  function initQr(){
-    const el = document.getElementById("qrcode");
+  function initQr(elementId){
+    const el = document.getElementById(elementId);
     if(!el || typeof QRCode === "undefined") return;
     el.innerHTML = "";
     try{
