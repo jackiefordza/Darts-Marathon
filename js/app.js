@@ -277,17 +277,21 @@
       const manualInput = document.getElementById("manual-score");
       if(manualInput){
         manualInput.addEventListener("input", ()=>{
-          if(manualInput.value === "") return;
+          if(manualInput.value === ""){ manualInput.classList.remove("invalid"); return; }
           const n = parseInt(manualInput.value, 10);
-          if(isNaN(n)) return;
-          if(n > 180) manualInput.value = "180";
-          else if(n < 0) manualInput.value = "0";
+          const bad = isNaN(n) || n > 180 || n < 0;
+          manualInput.classList.toggle("invalid", bad);
         });
       }
       document.getElementById("submit-visit").addEventListener("click", ()=>{
         const valStr = document.getElementById("manual-score").value;
         if(valStr === "") { flashBust("Enter a score first."); return; }
-        submitVisit(team, Number(valStr));
+        const n = Number(valStr);
+        if(isNaN(n) || n > 180 || n < 0){
+          flashBust("Max score is 180 — check that number before logging it.");
+          return;
+        }
+        submitVisit(team, n);
       });
       const undoBtn = document.getElementById("undo-visit");
       if(undoBtn) undoBtn.addEventListener("click", ()=> undoVisit(team));
