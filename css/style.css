@@ -211,8 +211,10 @@
   }
   .ticker-track{display:flex;gap:36px;white-space:nowrap;position:absolute;left:0;top:0;
     align-items:center;height:40px;padding:0 20px;animation:scrollTicker 32s linear infinite;}
-  .ticker-track span{font-size:13px;color:var(--wire);font-family:'Inter';}
-  .ticker-track b{color:var(--gold);font-family:'IBM Plex Mono';}
+  .ticker-track span{font-size:13px;color:var(--wire);font-family:'Inter';display:inline-flex;align-items:center;gap:6px;}
+  .ticker-track .dot{width:10px;height:10px;border-radius:50%;display:inline-block;flex-shrink:0;}
+  .ticker-track .dot.green{background:var(--green);border:1px solid #2c8a68;}
+  .ticker-track .dot.red{background:var(--red);border:1px solid #d9584c;}
   @keyframes scrollTicker{from{transform:translateX(0);}to{transform:translateX(-50%);}}
 
   .footer-row{display:flex;align-items:center;justify-content:space-between;margin-top:20px;gap:20px;}

@@ -58,7 +58,7 @@
   function renderLanding(){
     return `
       <div class="landing">
-        <img src="assets/burnaby-logo.png?v=12" alt="Burnaby Arms crest" class="crest" />
+        <img src="assets/burnaby-logo.png?v=13" alt="Burnaby Arms crest" class="crest" />
         <div class="eyebrow">Live · 100,001 → 0</div>
         <h1>${state.eventName}</h1>
         <div class="sub">Two boards, two teams, one countdown. Pick your role below.</div>
@@ -121,10 +121,10 @@
 
   function renderDisplay(){
     const g = state.teams.green, r = state.teams.red;
-    const combined = [...g.history.map(h=>({...h, team:"GREEN"})), ...r.history.map(h=>({...h, team:"RED"}))]
-      .sort((a,b)=> new Date(a.time) - new Date(b.time)).slice(-14).reverse();
-    const tickerItems = combined.length ? combined : [{team:"—", score:"", thrower:"Waiting for first throw…", bust:false}];
-    const tickerHtml = tickerItems.map(h=>`<span><b>${h.team}</b> ${h.bust?"bust":h.score}${h.thrower?" · "+escapeHtml(h.thrower):""}</span>`).join("");
+    const combined = [...g.history.map(h=>({...h, team:"green"})), ...r.history.map(h=>({...h, team:"red"}))]
+      .sort((a,b)=> new Date(a.time) - new Date(b.time)).slice(-14);
+    const tickerItems = combined.length ? combined : [{team:null, score:"", thrower:"Waiting for first throw…", bust:false}];
+    const tickerHtml = tickerItems.map(h=>`<span>${h.team ? `<i class="dot ${h.team}"></i>` : ""} ${h.bust?"bust":h.score}${h.thrower?" · "+escapeHtml(h.thrower):""}</span>`).join("");
 
     return `
       <div class="topbar" style="border:none;">
@@ -132,7 +132,7 @@
       </div>
       <div class="display-wrap">
         <div class="display-head">
-          <img src="assets/burnaby-logo.png?v=12" alt="Burnaby Arms crest" class="crest-small" />
+          <img src="assets/burnaby-logo.png?v=13" alt="Burnaby Arms crest" class="crest-small" />
           <h1>${state.eventName}</h1>
           <div class="sub">Live countdown · 100,001 to zero, doubles out</div>
           <div class="timer-badge" id="event-timer"><span class="tl">Time elapsed</span>${formatElapsed(state.startedAt)}</div>
