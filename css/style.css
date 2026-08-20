@@ -195,6 +195,12 @@
   .last-visit-strip .lv-label{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.6);}
   .last-visit-strip .lv-val{font-family:'IBM Plex Mono';font-weight:700;font-size:20px;margin-top:2px;}
 
+  .eta-strip{margin-top:10px;background:rgba(201,162,39,.1);border:1px solid rgba(201,162,39,.3);
+    border-radius:10px;padding:10px 16px;text-align:center;width:100%;}
+  .eta-strip .eta-label{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);}
+  .eta-strip .eta-val{font-family:'IBM Plex Mono';font-weight:700;font-size:17px;margin-top:3px;color:var(--cream-hi);}
+  .eta-strip .eta-sub{font-family:'Inter';font-weight:500;font-size:12px;color:rgba(250,246,236,.7);}
+
   .ticker-wrap{
     margin-top:22px;background:rgba(255,255,255,.04);border:1px solid rgba(231,220,194,.12);
     border-radius:14px;padding:10px 0;overflow:hidden;position:relative;height:40px;

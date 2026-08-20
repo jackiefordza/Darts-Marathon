@@ -161,6 +161,7 @@
     }
     const avg = t.totalVisits ? Math.round(t.totalPoints / t.totalVisits) : 0;
     const last = t.history[t.history.length-1];
+    const eta = computeEta(t);
     return `
       <div class="board-panel ${key}">
         <div class="team-name">${t.name}</div>
@@ -174,7 +175,30 @@
           <div class="lv-label">Last visit</div>
           <div class="lv-val">${last ? (last.bust ? "BUST" : last.score) : "—"}</div>
         </div>
+        <div class="eta-strip" id="eta-${key}">${etaHtml(eta, t.remaining)}</div>
       </div>`;
+  }
+
+  function computeEta(t){
+    if(!state.startedAt || t.remaining === 0) return null;
+    if(t.totalVisits < 3 || t.totalPoints <= 0) return null;
+    const elapsedMs = Date.now() - new Date(state.startedAt).getTime();
+    if(elapsedMs < 60000) return null; // need at least a minute of real pace data
+    const pointsPerMs = t.totalPoints / elapsedMs;
+    if(pointsPerMs <= 0) return null;
+    const msRemaining = t.remaining / pointsPerMs;
+    if(!isFinite(msRemaining) || msRemaining > 1000*60*60*30) return null; // ignore wild early estimates (>30h)
+    return { finishAt: new Date(Date.now() + msRemaining), msRemaining };
+  }
+
+  function etaHtml(eta, remaining){
+    if(remaining === 0) return `<div class="eta-label">Finished</div>`;
+    if(!eta) return `<div class="eta-label">Estimated finish</div><div class="eta-val">Calculating pace…</div>`;
+    const clock = eta.finishAt.toLocaleTimeString("en-GB", { hour:"2-digit", minute:"2-digit" });
+    const h = Math.floor(eta.msRemaining/3600000);
+    const m = Math.floor((eta.msRemaining%3600000)/60000);
+    const left = h > 0 ? `${h}h ${m}m left` : `${m}m left`;
+    return `<div class="eta-label">Estimated finish</div><div class="eta-val">${clock} <span class="eta-sub">· ${left}</span></div>`;
   }
 
   function renderSetup(){
@@ -220,6 +244,13 @@
     if(disp) disp.innerHTML = `<span class="tl">Time elapsed</span>${formatElapsed(state.startedAt)}`;
     const entryT = document.getElementById("entry-timer");
     if(entryT) entryT.textContent = formatElapsed(state.startedAt);
+
+    if(view === "display" && state.teams){
+      const etaG = document.getElementById("eta-green");
+      if(etaG) etaG.innerHTML = etaHtml(computeEta(state.teams.green), state.teams.green.remaining);
+      const etaR = document.getElementById("eta-red");
+      if(etaR) etaR.innerHTML = etaHtml(computeEta(state.teams.red), state.teams.red.remaining);
+    }
   }
 
   function initQr(elementId){
