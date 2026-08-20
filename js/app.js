@@ -274,6 +274,16 @@
       document.querySelectorAll(".qp").forEach(btn=>{
         btn.addEventListener("click", ()=> submitVisit(team, Number(btn.getAttribute("data-score"))));
       });
+      const manualInput = document.getElementById("manual-score");
+      if(manualInput){
+        manualInput.addEventListener("input", ()=>{
+          if(manualInput.value === "") return;
+          const n = parseInt(manualInput.value, 10);
+          if(isNaN(n)) return;
+          if(n > 180) manualInput.value = "180";
+          else if(n < 0) manualInput.value = "0";
+        });
+      }
       document.getElementById("submit-visit").addEventListener("click", ()=>{
         const valStr = document.getElementById("manual-score").value;
         if(valStr === "") { flashBust("Enter a score first."); return; }
