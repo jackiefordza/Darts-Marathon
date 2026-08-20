@@ -1,0 +1,15 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Only the single "marathon/state" document is open — everything else stays locked.
+    // No login required, since scorers won't be signing in on the day.
+    match /marathon/state {
+      allow read, write: if true;
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
