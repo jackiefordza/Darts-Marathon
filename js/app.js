@@ -306,33 +306,68 @@
   }
 
   async function submitVisit(team, score){
-    const t = state.teams[team];
     const thrower = document.getElementById("thrower-name") ? document.getElementById("thrower-name").value.trim() : "";
-    if(!state.startedAt) state.startedAt = new Date().toISOString();
-    const check = validThrow(t.remaining, score);
-    if(!check.ok){
-      flashBust(check.reason);
-      t.history.push({ score, thrower, time: new Date().toISOString(), bust:true });
-      await saveState(state);
-      return; // render happens via onSnapshot
+    const submitBtn = document.getElementById("submit-visit");
+    if(submitBtn) submitBtn.disabled = true;
+    let bustReason = null;
+
+    try{
+      await db.runTransaction(async (tx) => {
+        const snap = await tx.get(docRef);
+        const data = snap.exists ? snap.data() : DEFAULT_STATE();
+        const t = data.teams[team];
+        if(!data.startedAt) data.startedAt = new Date().toISOString();
+
+        const check = validThrow(t.remaining, score);
+        const entry = { score, thrower, time: new Date().toISOString(), bust: !check.ok };
+        t.history = [...(t.history || []), entry];
+
+        if(check.ok){
+          t.remaining = check.next;
+          t.totalVisits = (t.totalVisits || 0) + 1;
+          t.totalPoints = (t.totalPoints || 0) + score;
+        } else {
+          bustReason = check.reason;
+        }
+
+        data.updatedAt = new Date().toISOString();
+        tx.set(docRef, data);
+      });
+    }catch(e){
+      console.error("Submit visit failed", e);
+      showBanner(true);
     }
-    t.remaining = check.next;
-    t.totalVisits += 1;
-    t.totalPoints += score;
-    t.history.push({ score, thrower, time: new Date().toISOString(), bust:false });
-    await saveState(state);
+
+    if(submitBtn) submitBtn.disabled = false;
+    if(bustReason) flashBust(bustReason);
+    const manual = document.getElementById("manual-score");
+    if(manual) manual.value = "";
   }
 
   async function undoVisit(team){
-    const t = state.teams[team];
-    const last = t.history.pop();
-    if(!last) return;
-    if(!last.bust){
-      t.remaining += last.score;
-      t.totalVisits = Math.max(0, t.totalVisits - 1);
-      t.totalPoints = Math.max(0, t.totalPoints - last.score);
+    const undoBtn = document.getElementById("undo-visit");
+    if(undoBtn) undoBtn.disabled = true;
+    try{
+      await db.runTransaction(async (tx) => {
+        const snap = await tx.get(docRef);
+        if(!snap.exists) return;
+        const data = snap.data();
+        const t = data.teams[team];
+        const last = (t.history || []).pop();
+        if(!last) return;
+        if(!last.bust){
+          t.remaining += last.score;
+          t.totalVisits = Math.max(0, (t.totalVisits || 0) - 1);
+          t.totalPoints = Math.max(0, (t.totalPoints || 0) - last.score);
+        }
+        data.updatedAt = new Date().toISOString();
+        tx.set(docRef, data);
+      });
+    }catch(e){
+      console.error("Undo failed", e);
+      showBanner(true);
     }
-    await saveState(state);
+    if(undoBtn) undoBtn.disabled = false;
   }
 
   function flashBust(msg){
