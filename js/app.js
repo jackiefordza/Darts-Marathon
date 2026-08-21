@@ -51,14 +51,14 @@
     else if(view === "display") root.innerHTML = renderDisplay();
     else if(view === "setup") root.innerHTML = renderSetup();
     attachHandlers();
-    if(view === "display") setTimeout(()=>initQr("qrcode"), 30);
+    if(view === "display") setTimeout(()=>initQr("qrcode-header", 150), 30);
     if(view === "landing") setTimeout(()=>initQr("qrcode-landing"), 30);
   }
 
   function renderLanding(){
     return `
       <div class="landing">
-        <img src="assets/burnaby-logo.png?v=16" alt="Burnaby Arms crest" class="crest" />
+        <img src="assets/burnaby-logo.png?v=17" alt="Burnaby Arms crest" class="crest" />
         <div class="eyebrow">Live · 100,001 → 0</div>
         <h1>${state.eventName}</h1>
         <div class="sub">Two boards, two teams, one countdown. Pick your role below.</div>
@@ -132,10 +132,18 @@
       </div>
       <div class="display-wrap">
         <div class="display-head">
-          <img src="assets/burnaby-logo.png?v=16" alt="Burnaby Arms crest" class="crest-small" />
-          <h1>${state.eventName}</h1>
-          <div class="sub">Live countdown · 100,001 to zero, doubles out</div>
-          <div class="timer-badge" id="event-timer"><span class="tl">Time elapsed</span>${formatElapsed(state.startedAt)}</div>
+          <div class="head-flank head-flank-left">
+            <div id="qrcode-header"></div>
+            <div class="flank-txt">Scan to log scores</div>
+          </div>
+          <div class="head-center">
+            <h1>${state.eventName}</h1>
+            <div class="sub">Live countdown · 100,001 to zero, doubles out</div>
+            <div class="timer-badge" id="event-timer"><span class="tl">Time elapsed</span>${formatElapsed(state.startedAt)}</div>
+          </div>
+          <div class="head-flank head-flank-right">
+            <img src="assets/burnaby-logo.png?v=17" alt="Burnaby Arms crest" class="crest-large" />
+          </div>
         </div>
         <div class="boards">
           ${boardPanel("green", g)}
@@ -145,11 +153,7 @@
           <div class="ticker-track">${tickerHtml}${tickerHtml}</div>
         </div>
         <div class="footer-row">
-          <div class="qr-box">
-            <div id="qrcode"></div>
-            <div class="txt">Scan to log scores from your phone</div>
-          </div>
-          <div class="charity-line">Raising money for the <b>Community Defibrillator Fund</b> — every visit logged here helps the pot grow.</div>
+          <div class="charity-line" style="margin-left:auto;">Raising money for the <b>Community Defibrillator Fund</b> — every visit logged here helps the pot grow.</div>
         </div>
       </div>`;
   }
@@ -256,12 +260,13 @@
     }
   }
 
-  function initQr(elementId){
+  function initQr(elementId, size){
     const el = document.getElementById(elementId);
     if(!el || typeof QRCode === "undefined") return;
     el.innerHTML = "";
+    const s = size || 74;
     try{
-      new QRCode(el, { text: window.location.href, width: 74, height: 74, colorDark:"#16130F", colorLight:"#FAF6EC" });
+      new QRCode(el, { text: window.location.href, width: s, height: s, colorDark:"#16130F", colorLight:"#FAF6EC" });
     }catch(e){}
   }
 
