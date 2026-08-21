@@ -195,7 +195,7 @@
   }
   .board-panel .finished-banner.show{display:block;}
 
-  .odometer{display:flex;gap:5px;margin-top:14px;flex-wrap:wrap;justify-content:center;}
+  .odometer{display:flex;gap:5px;margin-top:10px;flex-wrap:wrap;justify-content:center;}
   .digit-tile{
     background:rgba(0,0,0,.32);border:1px solid rgba(255,255,255,.18);border-radius:10px;
     font-family:'IBM Plex Mono';font-weight:700;color:var(--cream-hi);
@@ -204,16 +204,16 @@
   }
   .digit-sep{font-family:'IBM Plex Mono';font-weight:700;font-size:clamp(42px,8.6vw,108px);color:rgba(255,255,255,.4);align-self:flex-end;padding-bottom:10px;}
 
-  .stat-row{display:flex;gap:22px;margin-top:14px;}
+  .stat-row{display:flex;gap:32px;margin-top:12px;}
   .stat{text-align:center;}
-  .stat .v{font-family:'IBM Plex Mono';font-weight:700;font-size:18px;}
-  .stat .l{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.55);margin-top:2px;}
+  .stat .v{font-family:'IBM Plex Mono';font-weight:700;font-size:clamp(30px,4vw,46px);line-height:1;}
+  .stat .l{font-size:clamp(12px,1.3vw,15px);letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-top:4px;}
 
-  .last-visit-strip{margin-top:18px;background:rgba(0,0,0,.25);border-radius:14px;padding:14px 16px 20px;text-align:center;width:100%;}
+  .last-visit-strip{margin-top:14px;background:rgba(0,0,0,.25);border-radius:14px;padding:14px 16px 20px;text-align:center;width:100%;}
   .last-visit-strip .lv-label{font-size:14px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.65);}
   .last-visit-strip .lv-val{font-family:'IBM Plex Mono';font-weight:700;font-size:clamp(56px,9vw,108px);line-height:1;margin-top:6px;}
 
-  .eta-strip{margin-top:14px;background:rgba(201,162,39,.1);border:1px solid rgba(201,162,39,.35);
+  .eta-strip{margin-top:10px;background:rgba(201,162,39,.1);border:1px solid rgba(201,162,39,.35);
     border-radius:14px;padding:14px 16px 18px;text-align:center;width:100%;}
   .eta-strip .eta-label{font-size:14px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);}
   .eta-strip .eta-val{font-family:'IBM Plex Mono';font-weight:700;font-size:clamp(38px,6.5vw,76px);line-height:1;margin-top:8px;color:var(--cream-hi);}
