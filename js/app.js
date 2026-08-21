@@ -58,7 +58,7 @@
   function renderLanding(){
     return `
       <div class="landing">
-        <img src="assets/burnaby-logo.png?v=14" alt="Burnaby Arms crest" class="crest" />
+        <img src="assets/burnaby-logo.png?v=15" alt="Burnaby Arms crest" class="crest" />
         <div class="eyebrow">Live · 100,001 → 0</div>
         <h1>${state.eventName}</h1>
         <div class="sub">Two boards, two teams, one countdown. Pick your role below.</div>
@@ -132,7 +132,7 @@
       </div>
       <div class="display-wrap">
         <div class="display-head">
-          <img src="assets/burnaby-logo.png?v=14" alt="Burnaby Arms crest" class="crest-small" />
+          <img src="assets/burnaby-logo.png?v=15" alt="Burnaby Arms crest" class="crest-small" />
           <h1>${state.eventName}</h1>
           <div class="sub">Live countdown · 100,001 to zero, doubles out</div>
           <div class="timer-badge" id="event-timer"><span class="tl">Time elapsed</span>${formatElapsed(state.startedAt)}</div>
@@ -201,7 +201,7 @@
     const h = Math.floor(eta.msRemaining/3600000);
     const m = Math.floor((eta.msRemaining%3600000)/60000);
     const left = h > 0 ? `${h}h ${m}m left` : `${m}m left`;
-    return `<div class="eta-label">Estimated finish</div><div class="eta-val">${clock} <span class="eta-sub">· ${left}</span></div>`;
+    return `<div class="eta-label">Estimated finish</div><div class="eta-val">${clock}<span class="eta-sub">${left}</span></div>`;
   }
 
   function renderSetup(){
