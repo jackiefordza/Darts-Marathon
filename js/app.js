@@ -58,7 +58,7 @@
   function renderLanding(){
     return `
       <div class="landing">
-        <img src="assets/burnaby-logo.png?v=13" alt="Burnaby Arms crest" class="crest" />
+        <img src="assets/burnaby-logo.png?v=14" alt="Burnaby Arms crest" class="crest" />
         <div class="eyebrow">Live · 100,001 → 0</div>
         <h1>${state.eventName}</h1>
         <div class="sub">Two boards, two teams, one countdown. Pick your role below.</div>
@@ -132,7 +132,7 @@
       </div>
       <div class="display-wrap">
         <div class="display-head">
-          <img src="assets/burnaby-logo.png?v=13" alt="Burnaby Arms crest" class="crest-small" />
+          <img src="assets/burnaby-logo.png?v=14" alt="Burnaby Arms crest" class="crest-small" />
           <h1>${state.eventName}</h1>
           <div class="sub">Live countdown · 100,001 to zero, doubles out</div>
           <div class="timer-badge" id="event-timer"><span class="tl">Time elapsed</span>${formatElapsed(state.startedAt)}</div>
@@ -395,6 +395,12 @@
 
   // ---------- Firestore realtime listener ----------
   async function boot(){
+    // If opened with ?view=display, land straight on the viewing screen —
+    // this means a forced reload (e.g. Safari's energy-saver reload) recovers
+    // automatically instead of dropping back to the landing menu.
+    const params = new URLSearchParams(window.location.search);
+    if(params.get("view") === "display") view = "display";
+
     try{
       const snap = await docRef.get();
       if(!snap.exists){
